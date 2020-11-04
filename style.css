@@ -23,8 +23,8 @@ body{
     min-height: 4px !important;
     margin: 0 !important;
     padding: 0 !important;
-    /* Para testear: */
-    background-color: red;
+    /* Para testear:
+    background-color: red;  */
     float: left;
     line-height: 0 !important;
     border: 0;

@@ -22,7 +22,7 @@ function construct() {
         //console.log('iteración fila');
 
         //Creo el elemento html
-        let rowhtml = document.createElement('div');
+        let rowhtml = document.createElement('span');
         rowhtml.classList.add('pixelrow');
         // Lo inserto
         canvas.append(rowhtml);
