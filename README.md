@@ -19,7 +19,7 @@ Landing with option to chose:
 
 Aesthetics:
 - Monochrome
-
+- User interface basic design 
 
 Engines:
 - AI
