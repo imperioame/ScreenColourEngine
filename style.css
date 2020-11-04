@@ -83,7 +83,7 @@ body{
     margin-bottom: 150px;
 }
 
-#aside a{
+#aside #asiderenderbutton{
     width: 100%;
     margin: 0 auto;
     border-radius: 4px;
@@ -94,6 +94,20 @@ body{
     text-align: center;
 }
 
-#aside a:hover{
+#aside #asiderenderbutton:hover{
     box-shadow: 0 3px 3px 0px rgba(0,0,0,0.2);;
+}
+
+#aside #github{
+    position: fixed;
+    bottom: 50px;
+    right: 150px;
+    font-size: 1em;
+    text-decoration: none;
+    color: skyblue;
+}
+
+#aside #github:hover{
+    color: rgb(36, 115, 189);
+    transition: 0.5s;
 }
