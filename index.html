@@ -3,10 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelArt</title>
+    <title>Screen Colour Engine</title>
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://kit.fontawesome.com/635234d3c3.js" crossorigin="anonymous"></script>
 </head>
 <body>
+    
+
+    <a id="menuicon" onclick="toggleAside()"><i class="fas fa-bars"></i></a>
+    <a id="rendericon" onclick="render()"><i class="fas fa-redo-alt"></i></a>
+
+    <aside id="aside" class="hidden">
+        <h1>Screen Colour Engine</h1>
+        <p>V0.1</p>
+
+        <h2>Controllers</h2>
+        <form>
+            <label for="BW">Black and white</label>
+            <input type="checkbox" name="BW" id="checkboxbw" onclick="toggleBW()">
+            
+            <label for="colour">Colour</label>
+            <input type="checkbox" name="colour" id="checkboxcolour" onclick="toggleColour()">
+        </form>
+
+        <a onclick="render()">Generar gráfica</a>
+    </aside>
+
     <main id="canvas"></main>
 
     <script src="code.js"></script>
