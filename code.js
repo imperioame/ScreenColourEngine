@@ -22,7 +22,7 @@ function construct() {
         //console.log('iteración fila');
 
         //Creo el elemento html
-        let rowhtml = document.createElement('span');
+        let rowhtml = document.createElement('div');
         rowhtml.classList.add('pixelrow');
         // Lo inserto
         canvas.append(rowhtml);
@@ -31,7 +31,7 @@ function construct() {
             //console.log('iteración pixel');
 
             //Creo el elemento html
-            let pixelhtml = document.createElement('div');
+            let pixelhtml = document.createElement('span');
             pixelhtml.setAttribute('id', `r${row}c${column}`);;
             pixelhtml.classList.add('pixel');
             //Lo inserto
