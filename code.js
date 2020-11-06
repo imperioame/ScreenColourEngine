@@ -38,6 +38,7 @@ function construct() {
             canvas.lastChild.append(pixelhtml);
         }
     }
+
 }
 
 /*
@@ -62,6 +63,14 @@ function blackAndWhite() {
             document.getElementById(`r${row}c${column}`).style.backgroundColor = `rgb(${brightness},${brightness},${brightness})`;
         }
     }
+    
+    /*
+    // El requestanimationframe con una función callback ANONIMA para poder pasarle parámetros
+    // Usar función anónima es la única forma de poder llamar funciones con parámetros
+    // (la función anónima lo único que hace es llamar a la función que me itneresa, pasando parámetro)
+    window.requestAnimationFrame(function(){
+        blackAndWhite()
+    });*/
 }
 
 
@@ -128,6 +137,9 @@ function render(){
 function develop(){
     construct();
     blackAndWhite();
+
+    //Esto de acá abajo es el randomizer para el black&white
+    //window.requestAnimationFrame(blackAndWhite);
 }
 
 window.onload = develop();
