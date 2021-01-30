@@ -85,5 +85,3 @@ function growRandomizerStep(value, orientation) {
         console.warn('No se obtuvo valor para trabajar');
     }
 }
-
-*/

@@ -1,23 +1,26 @@
-body{
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@100;300;400;700;900&display=swap');
+
+body {
     margin: 0;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
     padding: 0;
+    font-family: 'Bitter', serif;
 }
 
-.hidden{
+.hidden {
     display: none;
     transition: 1s;
 }
 
-#canvas{
+#canvas {
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-.pixel{
+.pixel {
     width: 4px !important;
     height: 4px !important;
     min-height: 4px !important;
@@ -30,7 +33,7 @@ body{
     border: 0;
 }
 
-.pixelrow{
+.pixelrow {
     margin: 0;
     padding: 0;
     display: block;
@@ -38,32 +41,35 @@ body{
     border: 0;
 }
 
-#menuicon, #rendericon{
+#menuicon,
+#rendericon {
     position: fixed;
     right: 50px;
     border-radius: 50%;
     background-color: white;
-    box-shadow: 0 3px 3px 2px rgba(0,0,0,0.8);
+    box-shadow: 0 3px 3px 2px rgba(0, 0, 0, 0.8);
     margin: 0;
     padding: 15px;
     z-index: 5;
     cursor: pointer;
 }
 
-#menuicon{
+#menuicon {
     top: 50px;
 }
-#rendericon{
+
+#rendericon {
     top: 110px;
 }
 
 
-#menuicon i, #rendericon i{
+#menuicon i,
+#rendericon i {
     color: black;
-} 
+}
 
 
-#aside{
+#aside {
     width: 25vw;
     height: 100vw;
     margin: 0;
@@ -75,7 +81,7 @@ body{
     top: 0;
 }
 
-#aside form input{
+#aside form input {
     display: block;
 }
 
@@ -83,7 +89,7 @@ body{
     margin-bottom: 150px;
 }
 
-#aside #asiderenderbutton{
+#aside #asiderenderbutton {
     width: 100%;
     margin: 0 auto;
     border-radius: 4px;
@@ -94,11 +100,12 @@ body{
     text-align: center;
 }
 
-#aside #asiderenderbutton:hover{
-    box-shadow: 0 3px 3px 0px rgba(0,0,0,0.2);;
+#aside #asiderenderbutton:hover {
+    box-shadow: 0 3px 3px 0px rgba(0, 0, 0, 0.2);
+    ;
 }
 
-#aside #github{
+#aside #github {
     position: fixed;
     bottom: 50px;
     right: 150px;
@@ -107,7 +114,7 @@ body{
     color: skyblue;
 }
 
-#aside #github:hover{
+#aside #github:hover {
     color: rgb(36, 115, 189);
     transition: 0.5s;
 }
