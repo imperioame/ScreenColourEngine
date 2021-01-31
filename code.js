@@ -14,6 +14,13 @@ let pixelSize = 4;
 
 let blackAndWhiteActive = true;
 let colourActive = false;
+let animationActive = false;
+var intervalID = null;
+
+
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
 
 /*
  * Función constructora 
@@ -55,37 +62,100 @@ function construct() {
  * Funciones generadoras de color. 
  */
 
+// Defino variables que almacenen el RGB objetivo de los píxeles.
+// Lo defino acá porque deben persistir al loop
+let targetRed, targetGreen, targetBlue;
+targetRed = targetGreen = targetBlue = 0;
+
 function colorize() {
+    console.warn('La animación está: ' + animationActive);
     //Recorre la matriz de píxeles y genera colores aleatóreos.
+
+    let contadorDePixeles = 0;
 
     for (let row = 0; row < screenHeight / pixelSize; row++) {
         for (let column = 0; column < screenWidth / pixelSize; column++) {
-            let red, green, blue;
-            if (blackAndWhiteActive) {
-                //Si es B&N, entonces cada canal tiene el mismo valor
-                red = Math.floor(Math.random() * 256);
-                green = blue = red;
+
+            contadorDePixeles++;
+
+            let currentRed, currentGreen, currentBlue;
+            if (animationActive) {
+                //Si la animación está activa, tengo que incrementar el valor desde el actual hasta el target
+
+                //Primero detecto el valor actual del rgb
+                let currentBGC = d.getElementById(`r${row}c${column}`).style.backgroundColor;
+                //console.log('currentBGC es ' + currentBGC);
+                currentRed = currentBGC.slice(4, currentBGC.indexOf(',', 4));
+                //console.log('Luego del slice, currentRed es ' + currentRed);
+                currentGreen = currentBGC.slice(currentBGC.indexOf(',', 4) + 1, currentBGC.indexOf(',', currentBGC.indexOf(',', 4) + 1));
+                //console.log('Luego del slice, currentGreen es ' + currentGreen);
+                currentBlue = currentBGC.slice(currentBGC.lastIndexOf(',') + 1, currentBGC.indexOf(')'));
+                //console.log('Luego del slice, currentBlue es ' + currentBlue);
+                //console.warn('separador gráfico en consola');
+
+                // Ahora tengo que incrementar el current, sin excederme del target
+                if (currentRed < 255) currentRed++;
+                if (currentGreen < 255) currentGreen++;
+                if (currentBlue < 255) currentBlue++;
+
+                // En el caso de que los valores current se hayan excedido del target, se vuelven a sortear los target
+                if (currentRed >= targetRed) {
+                    targetRed = Math.floor(Math.random() * 256);
+                    //console.log('Resetié targetRed, ahora es ' + targetRed);
+                }
+                if (currentGreen >= targetGreen) {
+                    targetGreen = Math.floor(Math.random() * 256);
+                    //console.log('Resetié targetGreen, ahora es ' + targetGreen);
+                }
+                if (targetBlue >= targetBlue) {
+                    targetBlue = Math.floor(Math.random() * 256);
+                    //console.log('Resetié targetBlue, ahora es ' + targetBlue);
+                }
+
+
+
             } else {
-                // Si es a color, cada canal tiene valores fdiferentes
-                red = Math.floor(Math.random() * 256);
-                green = Math.floor(Math.random() * 256);
-                blue = Math.floor(Math.random() * 256);
+                // Si la animación no está activa, entonces en cada vez que se ejecute esto se debe emitir un nuevo RGB para los pixeles
+                currentRed = Math.floor(Math.random() * 256);
+                currentGreen = Math.floor(Math.random() * 256);
+                currentBlue = Math.floor(Math.random() * 256);
+                console.error('la animación no está activa. entré acá');
             }
 
-            d.getElementById(`r${row}c${column}`).style.backgroundColor = `rgb(${red},${green},${blue})`;
+            if (blackAndWhiteActive) {
+                //Si es B&N, entonces cada canal tiene el mismo valor
+                currentGreen = currentBlue = currentRed;
+            }
+
+            // Guardo el RGB en el pixel
+            d.getElementById(`r${row}c${column}`).style.backgroundColor = `rgb(${currentRed},${currentGreen},${currentBlue})`;
         }
     }
 
-}
+    console.warn(contadorDePixeles + ' pixeles actualmente');
 
-/*
-// El requestanimationframe con una función callback ANONIMA para poder pasarle parámetros
-// Usar función anónima es la única forma de poder llamar funciones con parámetros
-// (la función anónima lo único que hace es llamar a la función que me interesa, pasando parámetro)
-window.requestAnimationFrame(function(){
-    blackAndWhite()
-});
-*/
+    if (animationActive) {
+        // En el caso de que la variable animationActive esté activa, debo loopear
+        setTimeout(() => {
+            window.requestAnimationFrame(colorize);
+        }, 3000);
+
+        console.warn('solicité un frame');
+
+        /* Esto sirve con setinterval, con requestanimationframe no 
+        // Primero me fijo si ya existía un intervalo
+        if (intervalID == null) {
+            intervalID = setInterval(colorize, 2000);
+            console.warn('se inicia el intervalo' + intervalID);
+        }*/
+    }
+    /* Esto sirve con setinterval, con requestanimationframe no
+        if (!animationActive && intervalID != null) {
+            clearInterval(intervalID);
+            console.log('cerré el intervalo ' + intervalID);
+            intervalID = null;
+        }*/
+}
 
 
 
@@ -117,14 +187,18 @@ function toggleAside() {
 
 function toggleBW() {
     blackAndWhiteActive = !blackAndWhiteActive;
-    colourActive = false
+    colourActive = false;
     d.getElementById('checkboxcolour').checked = false;
 }
 
 function toggleColour() {
     colourActive = !colourActive;
-    blackAndWhiteActive = false
+    blackAndWhiteActive = false;
     d.getElementById('checkboxbw').checked = false;
+}
+
+function toggleAnimation() {
+    animationActive = !animationActive;
 }
 
 
