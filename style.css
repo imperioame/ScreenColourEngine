@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Bitter:wght@100;300;400;700;900&display=swap');
 
+html{
+    --pixel-size: 4px;
+}
+
 body {
     margin: 0;
     width: 100vw;
@@ -14,6 +18,22 @@ body {
     transition: 1s;
 }
 
+.my-2{
+    margin: 3em 0;
+}
+
+.mt-2{
+    margin-top: 3em; 
+}
+
+.mb-2{
+    margin-bottom: 3em; 
+}
+
+.mb-1{
+    margin-bottom: 1em; 
+}
+
 #canvas {
     margin: 0;
     padding: 0;
@@ -21,9 +41,9 @@ body {
 }
 
 .pixel {
-    width: 4px !important;
-    height: 4px !important;
-    min-height: 4px !important;
+    width: var(--pixel-size) !important;
+    height: var(--pixel-size) !important;
+    min-height: var(--pixel-size) !important;
     margin: 0 !important;
     padding: 0 !important;
     /* Para testear:
@@ -85,10 +105,6 @@ body {
     display: block;
 }
 
-#aside form {
-    margin-bottom: 150px;
-}
-
 #aside #asiderenderbutton {
     width: 100%;
     margin: 0 auto;
@@ -103,6 +119,10 @@ body {
 #aside #asiderenderbutton:hover {
     box-shadow: 0 3px 3px 0px rgba(0, 0, 0, 0.2);
     ;
+}
+
+#pixelSizeValue {
+    display: inline-block;
 }
 
 #aside #github {

@@ -1,10 +1,19 @@
 # Changelog
 ## [Unreleased]
 ### Added
-- Working on time-paced procedurally-developed pixel color values
+- Monochrome: posibility to set a hue value with a slider to make a monochrome from it
 ### Changed
 - Randomizer engine: Working on rules for the engine. Would be able to decide the color value according to neighbors
+- Check performance for single pixle "requestAnimationFrame" operation. is it viable or not performance-friendly at all?
+- Check if it's correct to reset requestAnimationFrame on construct function (considering it's requested every time user clicks a UI button)
 
+## [0.3.0] - 2021-01-30
+### Added
+- Time-paced procedurally-developed pixel color values for B&W
+- Slider to manually adjust pixel size. Default sugested 16px (for better performance)
+
+### Changed
+- Code structure: to avoid problems, now the script saves the total of rows and columns. Also, the UI buttons now calls "Develop" function instead of "colorize" (develop clears the HTML matrix of pixels and recreates it).
 
 ## [0.2.0] - 2021-01-30
 ### Changed

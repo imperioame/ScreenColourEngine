@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,21 +13,23 @@
  -->
     <script src="https://kit.fontawesome.com/635234d3c3.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
-    
+
 
     <a id="menuicon" onclick="toggleAside()"><i class="fas fa-bars"></i></a>
-    <a id="rendericon" onclick="colorize()"><i class="fas fa-redo-alt"></i></a>
+    <a id="rendericon" onclick="develop()"><i class="fas fa-redo-alt"></i></a>
 
     <aside id="aside" class="hidden">
         <h1>Screen Colour Engine</h1>
-        <p><a href="https://github.com/imperioame/ScreenColourEngine/blob/master/Changelog.md" target="_blank">V0.2 - See changelog</a></p>
+        <p><a href="https://github.com/imperioame/ScreenColourEngine/blob/master/Changelog.md" target="_blank">V0.3 -
+                See changelog</a></p>
 
         <h2>Controllers</h2>
-        <form>
+        <form class="mb-1">
             <label for="BW">Black and white</label>
             <input type="checkbox" name="BW" id="checkboxbw" onclick="toggleBW()" checked="true">
-            
+
             <label for="colour">Colour</label>
             <input type="checkbox" name="colour" id="checkboxcolour" onclick="toggleColour()">
 
@@ -34,7 +37,12 @@
             <input type="checkbox" name="animated" id="checkboxanimation" onclick="toggleAnimation()">
         </form>
 
-        <a onclick="colorize()" id="asiderenderbutton">Generar gráfica</a>
+        <div class="slider mb-2">
+            <input type="range" name="pixelSize" id="pixelSizeSlider" min="2" max="512" step="2" value="16">
+            <p id="pixelSizeValue"></p>
+        </div>
+
+        <a onclick="develop()" id="asiderenderbutton">Refrescar matriz</a>
         <a href="https://github.com/imperioame/ScreenColourEngine" id="github" target="blank">Github project</a>
     </aside>
 
@@ -43,4 +51,5 @@
     <script src="engines.js"></script>
     <script src="code.js"></script>
 </body>
+
 </html>
