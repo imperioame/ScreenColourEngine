@@ -26,7 +26,7 @@
                 See changelog</a></p>
 
         <h2>Controllers</h2>
-        <form class="mb-1">
+        <form class="mb-1" id="engineControls">
             <label for="BW">Black and white</label>
             <input type="checkbox" name="BW" id="checkboxbw" onclick="toggleBW()" checked="true">
 
@@ -35,10 +35,13 @@
 
             <label for="animated">Animated</label>
             <input type="checkbox" name="animated" id="checkboxanimation" onclick="toggleAnimation()">
+
+            <label for="pingpongloop">Ping pong loop</label>
+            <input type="checkbox" name="pingpongloop" id="checkboxanimation" onclick="togglePingPong()">
         </form>
 
         <div class="slider mb-2">
-            <input type="range" name="pixelSize" id="pixelSizeSlider" min="2" max="512" step="2" value="16">
+            <input type="range" name="pixelSize" id="pixelSizeSlider" min="2" max="1024" step="2" value="16">
             <p id="pixelSizeValue"></p>
         </div>
 

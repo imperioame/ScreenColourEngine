@@ -21,7 +21,8 @@ pixelSizeValue.innerHTML = pixelSize + 'px';
 let blackAndWhiteActive = true;
 let colourActive = false;
 let animationActive = false;
-var animationFrameID = null;
+let animationFrameID = null;
+let pingPongAnimation = false;
 
 let rowQuantity, columnQuantity;
 
@@ -79,6 +80,9 @@ function construct() {
             pixelhtml.dataset.targetRed = 0;
             pixelhtml.dataset.targetGreen = 0;
             pixelhtml.dataset.targetBlue = 0;
+            pixelhtml.dataset.pingPongLoopRedAdd = true;
+            pixelhtml.dataset.pingPongLoopGreenAdd = true;
+            pixelhtml.dataset.pingPongLoopBlueAdd = true;
             pixelhtml.classList.add('pixel');
             pixelhtml.style.backgroundColor = '';
             //Lo inserto
@@ -97,8 +101,9 @@ function construct() {
  * Funciones generadoras de color. 
  */
 
-// Defino variables que almacenen el RGB objetivo de los píxeles.
-// Lo defino acá porque deben persistir al loop
+// En esta función recorro la matriz y genero el color.
+// En el caso de que la animación esté activa, recorre y evalúa si el valor actual del RGB es menor o igual al valor TARGET de RGB.
+// En caso de que actual haya superado a TARGET, se resetea el valor de ese canal a 0, y sortea un nuevo target.
 function colorize() {
     console.warn('La animación está: ' + animationActive);
     //Recorre la matriz de píxeles y genera el color correspondiente (B&N o colorizado).
@@ -114,6 +119,9 @@ function colorize() {
             let targetRed = currentPixel.dataset.targetRed;
             let targetGreen = currentPixel.dataset.targetGreen;
             let targetBlue = currentPixel.dataset.targetBlue;
+            let pingPongLoopRedAdd = currentPixel.dataset.pingPongLoopRedAdd == 'true' ? true : false;
+            let pingPongLoopGreenAdd = currentPixel.dataset.pingPongLoopGreenAdd == 'true' ? true : false;
+            let pingPongLoopBlueAdd = currentPixel.dataset.pingPongLoopBlueAdd == 'true' ? true : false;
 
             let currentRed, currentGreen, currentBlue;
             if (animationActive) {
@@ -129,22 +137,37 @@ function colorize() {
                 //console.log('Luego del slice, currentBlue es ' + currentBlue);
                 //console.warn('separador gráfico en consola');
 
-                // Ahora tengo que incrementar el current, sin excederme del target
-                if (currentRed < 255) currentRed++;
+
+                // Ahora tengo que incrementar o decrementar el current, sin excederme del target
+                if (currentRed < 255 && pingPongLoopRedAdd) {
+                    currentRed++;
+                } else if (currentRed > 0 && !pingPongLoopRedAdd) {
+                    currentRed--;
+                } else if (currentRed == 0 && !pingPongLoopRedAdd) currentPixel.dataset.pingPongLoopRedAdd = true;
                 if (blackAndWhiteActive) {
                     //Si es B&N, entonces cada canal tiene el mismo valor
                     currentGreen = currentBlue = currentRed;
                 } else {
                     // No es B&N, cada canal tiene su propio valor
-                    if (currentGreen < 255) currentGreen++;
-                    if (currentBlue < 255) currentBlue++;
+                    if (currentGreen < 255 && pingPongLoopGreenAdd) currentGreen++;
+                    if (currentGreen > 0 && !pingPongLoopGreenAdd) currentGreen--;
+                    if (currentGreen == 0 && !pingPongLoopGreenAdd) currentPixel.dataset.pingPongLoopGreenAdd = true;
+                    if (currentBlue < 255 && pingPongLoopBlueAdd) currentBlue++;
+                    if (currentBlue > 0 && !pingPongLoopBlueAdd) currentBlue--;
+                    if (currentBlue == 0 && !pingPongLoopBlueAdd) currentPixel.dataset.pingPongLoopBlueAdd = true;
                 }
 
 
                 // En el caso de que los valores current se hayan excedido del target, se vuelven a sortear los target y resetean los current
                 if (currentRed >= targetRed) {
-                    currentPixel.dataset.targetRed = Math.floor(Math.random() * 256);
-                    currentRed = 0;
+                    currentPixel.dataset.targetRed = Math.ceil(Math.random() * 255);
+                    //Target no puede ser 0, para evitar problemas con pingpongloop
+                    if (pingPongAnimation) {
+                        //Si pingponganimation está activo, entonces tengo que decrementar hasta llegar a 0.
+                        currentPixel.dataset.pingPongLoopRedAdd = false;
+                    } else {
+                        currentRed = 0;
+                    }
 
                     if (blackAndWhiteActive) {
                         // Si es B&N entonces todos los target son iguales
@@ -156,26 +179,38 @@ function colorize() {
                 if (!blackAndWhiteActive) {
                     // Si no es B&N, entonces cada canal puede tener su target, y se debe evaluar por separado.
                     if (currentGreen >= targetGreen) {
-                        currentPixel.dataset.targetGreen = Math.floor(Math.random() * 256);
-                        currentGreen = 0;
+                        currentPixel.dataset.targetGreen = Math.ceil(Math.random() * 255);
+                        //Target no puede ser 0, para evitar problemas con pingpongloop
+                        if (pingPongAnimation) {
+                            //Si pingponganimation está activo, entonces tengo que decrementar hasta llegar a 0.
+                            currentPixel.dataset.pingPongLoopGreenAdd = false;
+                        } else {
+                            currentGreen = 0;
+                        }
                     }
                     if (currentBlue >= targetBlue) {
-                        currentPixel.dataset.targetBlue = Math.floor(Math.random() * 256);
-                        currentBlue = 0;
+                        currentPixel.dataset.targetBlue = Math.ceil(Math.random() * 255);
+                        //Target no puede ser 0, para evitar problemas con pingpongloop
+                        if (pingPongAnimation) {
+                            //Si pingponganimation está activo, entonces tengo que decrementar hasta llegar a 0.
+                            currentPixel.dataset.pingPongLoopBlueAdd = false;
+                        } else {
+                            currentBlue = 0;
+                        }
                     }
                 }
 
 
             } else {
                 // Si la animación no está activa, entonces en cada vez que se ejecute esto se debe emitir un nuevo RGB para los pixeles
-                currentRed = Math.floor(Math.random() * 256);
+                currentRed = Math.ceil(Math.random() * 255);
                 if (blackAndWhiteActive) {
                     //Si es B&N, entonces cada canal tiene el mismo valor
                     currentGreen = currentBlue = currentRed;
                 } else {
                     // No es B&N, cada canal tiene su propio valor
-                    currentGreen = Math.floor(Math.random() * 256);
-                    currentBlue = Math.floor(Math.random() * 256);
+                    currentGreen = Math.ceil(Math.random() * 255);
+                    currentBlue = Math.ceil(Math.random() * 255);
                 }
                 console.error('la animación no está activa. entré acá');
             }
@@ -187,29 +222,23 @@ function colorize() {
         }
     }
 
-    console.warn(contadorDePixeles + ' pixeles actualmente');
+    console.info(contadorDePixeles + ' pixeles actualmente');
 
     if (animationActive) {
         // En el caso de que la variable animationActive esté activa, debo loopear
 
         animationFrameID = window.requestAnimationFrame(colorize);
-        console.log('el animationframe es: ' + animationFrameID);
-
-        console.log('Black and white on: ' + blackAndWhiteActive);
-        console.log('Color on: ' + colourActive);
+        console.info('el animationframe es: ' + animationFrameID);
+        //console.info('Black and white on: ' + blackAndWhiteActive);
+        //console.info('Color on: ' + colourActive);
 
     }
 }
-
-
 
 /*
  * Funciones adicionales 
  */
 
-function timer() {
-    return false;
-}
 
 function rRandom() {
     return Math.floor(Math.random() * screenHeight / pixelSize);
@@ -219,6 +248,16 @@ function cRandom() {
     return Math.floor(Math.random() * screenWidth / pixelSize);
 }
 
+//pixelMap devuelve un array de todos los píxeles en un array
+function pixelMap() {
+    let aPixels = [];
+    for (let row = 0; row < rowQuantity; row++) {
+        for (let column = 0; column < columnQuantity; column++) {
+            aPixels.push(d.getElementById(`r${row}c${column}`));
+        }
+    }
+    console.info(aPixels);
+}
 
 
 /*
@@ -249,7 +288,6 @@ function toggleAnimation() {
         window.cancelAnimationFrame(animationFrameID);
         animationFrameID = null;
     }
-
 }
 
 pixelSizeSlider.oninput = function () {
@@ -259,7 +297,9 @@ pixelSizeSlider.oninput = function () {
     html.style.setProperty('--pixel-size', pixelSize + 'px');
 }
 
-
+function togglePingPong() {
+    pingPongAnimation = !pingPongAnimation;
+}
 
 
 /*

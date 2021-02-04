@@ -40,23 +40,22 @@ body {
     overflow: hidden;
 }
 
+.pixelrow {
+    width: calc(100vw + var(--pixel-size));
+    margin: 0;
+    padding: 0;
+    display: block;
+    line-height: 0 !important;
+    border: 0;
+}
+
 .pixel {
     width: var(--pixel-size) !important;
     height: var(--pixel-size) !important;
     min-height: var(--pixel-size) !important;
     margin: 0 !important;
     padding: 0 !important;
-    /* Para testear:
-    background-color: red;  */
     float: left;
-    line-height: 0 !important;
-    border: 0;
-}
-
-.pixelrow {
-    margin: 0;
-    padding: 0;
-    display: block;
     line-height: 0 !important;
     border: 0;
 }
@@ -99,6 +98,11 @@ body {
     position: fixed;
     right: 0;
     top: 0;
+}
+
+#aside #engineControls{
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 #aside form input {

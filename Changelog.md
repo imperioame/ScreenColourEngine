@@ -4,8 +4,15 @@
 - Monochrome: posibility to set a hue value with a slider to make a monochrome from it
 ### Changed
 - Randomizer engine: Working on rules for the engine. Would be able to decide the color value according to neighbors
-- Check performance for single pixle "requestAnimationFrame" operation. is it viable or not performance-friendly at all?
 - Check if it's correct to reset requestAnimationFrame on construct function (considering it's requested every time user clicks a UI button)
+- Speed slider ? let the user decide the animation speed (should only consider setep values that divide 255)
+
+## [0.3.1] - 2021-01-30
+### Added
+- PingPong animation checkbox: now the user can chose whether to loop back and forwards when the animation reaches the target, instead of jumping back to zero
+
+### Changed
+- Fixed pixel gap in the screen limits (last row and last column)
 
 ## [0.3.0] - 2021-01-30
 ### Added
