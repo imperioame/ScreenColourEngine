@@ -5,7 +5,17 @@
 ### Changed
 - Randomizer engine: Working on rules for the engine. Would be able to decide the color value according to neighbors
 - Check if it's correct to reset requestAnimationFrame on construct function (considering it's requested every time user clicks a UI button)
-- Speed slider ? let the user decide the animation speed (should only consider setep values that divide 255)
+- Aside pading. It's broken to the right.
+
+
+## [0.4.0] - 2021-02-13
+### Added
+- Auto-develop on pixel value change for a threshold. For values of 16px and above, it calls develp on input change. Below that it doesnt.
+- Speed slider: The user can set the animation speed 
+### Changed
+- Style on aside: now uses flexbox, and some other minor changes
+- PingpongLoop checkbox and speed slider are now created dinamically
+- Setted to start with animation and pingpongloop on
 
 ## [0.3.1] - 2021-01-30
 ### Added

@@ -20,9 +20,12 @@ pixelSizeValue.innerHTML = pixelSize + 'px';
 
 let blackAndWhiteActive = true;
 let colourActive = false;
-let animationActive = false;
+let animationActive = true;
 let animationFrameID = null;
-let pingPongAnimation = false;
+let pingPongAnimation = true;
+let animationSpeed = d.getElementById('animationSpeed').value;
+d.getElementById('animationSpeedValue').innerHTML = animationSpeed;
+d.getElementById('animationSpeed').addEventListener('input', refreshSpeedValue);
 
 let rowQuantity, columnQuantity;
 
@@ -84,7 +87,7 @@ function construct() {
             pixelhtml.dataset.pingPongLoopGreenAdd = true;
             pixelhtml.dataset.pingPongLoopBlueAdd = true;
             pixelhtml.classList.add('pixel');
-            pixelhtml.style.backgroundColor = '';
+            pixelhtml.style.backgroundColor = 'rgb(0,0,0)';
             //Lo inserto
             canvas.lastChild.append(pixelhtml);
             currentColumnQuantity++;
@@ -92,8 +95,8 @@ function construct() {
         }
     }
 
-    console.log('cantidad de filas total: ' + rowQuantity);
-    console.log('cantidad de columnas total: ' + columnQuantity);
+    console.info('cantidad de filas total: ' + rowQuantity);
+    console.info('cantidad de columnas total: ' + columnQuantity);
 
 }
 
@@ -105,7 +108,7 @@ function construct() {
 // En el caso de que la animación esté activa, recorre y evalúa si el valor actual del RGB es menor o igual al valor TARGET de RGB.
 // En caso de que actual haya superado a TARGET, se resetea el valor de ese canal a 0, y sortea un nuevo target.
 function colorize() {
-    console.warn('La animación está: ' + animationActive);
+    //console.warn('La animación está: ' + animationActive);
     //Recorre la matriz de píxeles y genera el color correspondiente (B&N o colorizado).
 
     let contadorDePixeles = 0;
@@ -129,31 +132,31 @@ function colorize() {
 
                 //Primero detecto el valor actual del rgb
                 //console.log('currentBGC es ' + currentBGC);
-                currentRed = currentBGC.slice(4, currentBGC.indexOf(',', 4));
+                currentRed = parseInt(currentBGC.slice(4, currentBGC.indexOf(',', 4)));
                 //console.log('Luego del slice, currentRed es ' + currentRed);
-                currentGreen = currentBGC.slice(currentBGC.indexOf(',', 4) + 1, currentBGC.indexOf(',', currentBGC.indexOf(',', 4) + 1));
+                currentGreen = parseInt(currentBGC.slice(currentBGC.indexOf(',', 4) + 2, currentBGC.indexOf(',', currentBGC.indexOf(',', 4) + 1)));
                 //console.log('Luego del slice, currentGreen es ' + currentGreen);
-                currentBlue = currentBGC.slice(currentBGC.lastIndexOf(',') + 1, currentBGC.indexOf(')'));
+                currentBlue = parseInt(currentBGC.slice(currentBGC.lastIndexOf(',') + 2, currentBGC.indexOf(')')));
                 //console.log('Luego del slice, currentBlue es ' + currentBlue);
                 //console.warn('separador gráfico en consola');
 
 
                 // Ahora tengo que incrementar o decrementar el current, sin excederme del target
                 if (currentRed < 255 && pingPongLoopRedAdd) {
-                    currentRed++;
+                    currentRed += 1 * animationSpeed;
                 } else if (currentRed > 0 && !pingPongLoopRedAdd) {
-                    currentRed--;
+                    currentRed -= 1 * animationSpeed;
                 } else if (currentRed == 0 && !pingPongLoopRedAdd) currentPixel.dataset.pingPongLoopRedAdd = true;
                 if (blackAndWhiteActive) {
                     //Si es B&N, entonces cada canal tiene el mismo valor
                     currentGreen = currentBlue = currentRed;
                 } else {
                     // No es B&N, cada canal tiene su propio valor
-                    if (currentGreen < 255 && pingPongLoopGreenAdd) currentGreen++;
-                    if (currentGreen > 0 && !pingPongLoopGreenAdd) currentGreen--;
+                    if (currentGreen < 255 && pingPongLoopGreenAdd) currentGreen += 1 * animationSpeed;
+                    if (currentGreen > 0 && !pingPongLoopGreenAdd) currentGreen -= 1 * animationSpeed;
                     if (currentGreen == 0 && !pingPongLoopGreenAdd) currentPixel.dataset.pingPongLoopGreenAdd = true;
-                    if (currentBlue < 255 && pingPongLoopBlueAdd) currentBlue++;
-                    if (currentBlue > 0 && !pingPongLoopBlueAdd) currentBlue--;
+                    if (currentBlue < 255 && pingPongLoopBlueAdd) currentBlue += 1 * animationSpeed;
+                    if (currentBlue > 0 && !pingPongLoopBlueAdd) currentBlue -= 1 * animationSpeed;
                     if (currentBlue == 0 && !pingPongLoopBlueAdd) currentPixel.dataset.pingPongLoopBlueAdd = true;
                 }
 
@@ -222,13 +225,13 @@ function colorize() {
         }
     }
 
-    console.info(contadorDePixeles + ' pixeles actualmente');
+    //console.info(contadorDePixeles + ' pixeles actualmente');
 
     if (animationActive) {
         // En el caso de que la variable animationActive esté activa, debo loopear
 
         animationFrameID = window.requestAnimationFrame(colorize);
-        console.info('el animationframe es: ' + animationFrameID);
+        //console.info('el animationframe es: ' + animationFrameID);
         //console.info('Black and white on: ' + blackAndWhiteActive);
         //console.info('Color on: ' + colourActive);
 
@@ -259,6 +262,68 @@ function pixelMap() {
     console.info(aPixels);
 }
 
+function toggleCheckboxAnimation() {
+
+    // Busco si existe
+    let animationConfigs = d.getElementById('animationConfigs');
+
+    while (animationConfigs.lastChild.name != 'animated' && animationConfigs.lastChild.htmlFor != 'checkboxanimation' && animationConfigs.lastChild.tagName != 'LEGEND') {
+        animationConfigs.removeChild(animationConfigs.lastChild);
+    }
+
+    if (animationActive) {
+        // si se activa la animación, entonces creo los config
+        animationConfigs.appendChild(d.createElement('br'));
+
+        //Creo el pingpongLoop
+        let input = d.createElement('input');
+        input.type = 'checkbox';
+        input.name = 'pingpongloop';
+        input.id = 'checkboxpingpong';
+        input.addEventListener('click', togglePingPong);
+
+        animationConfigs.appendChild(input);
+
+        let label = d.createElement('label');
+        label.htmlFor = 'checkboxpingpong';
+        label.innerHTML = "Ping pong loop";
+
+        animationConfigs.appendChild(label);
+
+
+        //Creo el slider de velocidad
+        let div = d.createElement('div');
+        div.classList = 'slider mt-1';
+
+        label = d.createElement('label');
+        label.htmlFor = 'animationSpeed';
+        label.innerHTML = "Animation Speed factor";
+        div.appendChild(label);
+        div.appendChild(d.createElement('br'));
+
+        input = d.createElement('input');
+        input.type = 'range';
+        input.name = 'animationSpeed';
+        input.id = 'animationSpeed';
+        input.min = '0.5';
+        input.max = '5';
+        input.step = '0.2';
+        input.value = animationSpeed;
+        input.addEventListener('input', refreshSpeedValue);
+        div.appendChild(input);
+
+        let p = d.createElement('p');
+        p.id = 'animationSpeedValue';
+        p.classList = 'ml-1'
+        p.innerHTML = animationSpeed;
+        div.appendChild(p);
+
+        animationConfigs.appendChild(div);
+    }
+
+}
+
+
 
 /*
  * Funciones de interfaz 
@@ -284,21 +349,62 @@ function toggleColour() {
 
 function toggleAnimation() {
     animationActive = !animationActive;
+    let checkboxanimation = d.getElementById('checkboxanimation');
+    if (checkboxanimation.checked != animationActive) checkboxanimation.checked = animationActive;
     if (animationFrameID != null) {
         window.cancelAnimationFrame(animationFrameID);
         animationFrameID = null;
     }
+
+    if (!animationActive) pingPongAnimation = false;
+
+    toggleCheckboxAnimation();
+
 }
 
-pixelSizeSlider.oninput = function () {
-    console.log('estas modificando el tamaño del pixel');
+
+function refreshPixelValue() {
+    //console.log('estas modificando el tamaño del pixel');
     pixelSize = this.value;
     pixelSizeValue.innerHTML = pixelSize + 'px';
+    if (pixelSize < 16) {
+        pixelSizeValue.classList.add("warn");
+        if (!d.getElementById('pixelSizeWarning')) {
+            let pixelSizeWarning = d.createElement('p');
+            pixelSizeWarning.innerHTML = 'Too small to auto-develop. Please press "Refresh matrix"';
+            pixelSizeWarning.classList.add("warn");
+            pixelSizeWarning.id = 'pixelSizeWarning';
+            pixelSizeValue.parentElement.append(pixelSizeWarning);
+        }
+    } else {
+        pixelSizeValue.classList.remove("warn");
+        let pixelSizeWarning = d.getElementById('pixelSizeWarning');
+        if (pixelSizeWarning) pixelSizeValue.parentElement.removeChild(pixelSizeWarning);
+
+    }
     html.style.setProperty('--pixel-size', pixelSize + 'px');
+
+    if (pixelSize >= 16) {
+        develop();
+    }
 }
+
+pixelSizeSlider.addEventListener('input', refreshPixelValue);
+
+
+function refreshSpeedValue() {
+    console.log('estas modificando la velocidad de animación');
+    animationSpeed = this.value;
+    let animationSpeedValue = d.getElementById('animationSpeedValue');
+    animationSpeedValue.innerHTML = animationSpeed;
+}
+
+
 
 function togglePingPong() {
     pingPongAnimation = !pingPongAnimation;
+    let pingpongCheckbox = d.getElementById('checkboxpingpong');
+    if (pingpongCheckbox && pingpongCheckbox.checked != pingPongAnimation) pingpongCheckbox.checked = pingPongAnimation;
 }
 
 
@@ -310,6 +416,7 @@ function togglePingPong() {
 function develop() {
     construct();
     colorize();
+
 
     //Esto de acá abajo es el randomizer para el black&white
     //window.requestAnimationFrame(blackAndWhite);

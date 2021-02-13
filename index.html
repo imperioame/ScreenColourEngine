@@ -21,32 +21,56 @@
     <a id="rendericon" onclick="develop()"><i class="fas fa-redo-alt"></i></a>
 
     <aside id="aside" class="hidden">
-        <h1>Screen Colour Engine</h1>
-        <p><a href="https://github.com/imperioame/ScreenColourEngine/blob/master/Changelog.md" target="_blank">V0.3 -
-                See changelog</a></p>
+        <div class="asideflexcontainer">
+            <h1>Screen Colour Engine</h1>
+            <p><a href="https://github.com/imperioame/ScreenColourEngine/blob/master/Changelog.md" target="_blank">V0.4
+                    -
+                    See changelog</a></p>
 
-        <h2>Controllers</h2>
-        <form class="mb-1" id="engineControls">
-            <label for="BW">Black and white</label>
-            <input type="checkbox" name="BW" id="checkboxbw" onclick="toggleBW()" checked="true">
+            <h2>Controllers</h2>
+            <form class="mb-1" id="engineControls">
+                <fieldset>
+                    <legend>Aesthetics</legend>
+                    <input type="checkbox" name="BW" id="checkboxbw" onclick="toggleBW()" checked="true">
+                    <label for="checkboxbw">Black and white</label>
+                    <br>
+                    <input type="checkbox" name="colour" id="checkboxcolour" onclick="toggleColour()">
+                    <label for="checkboxcolour">Colour</label>
 
-            <label for="colour">Colour</label>
-            <input type="checkbox" name="colour" id="checkboxcolour" onclick="toggleColour()">
+                    <div class="slider mt-1">
+                        <label for="pixelSizeSlider">Pixel Size</label>
+                        <br>
+                        <input type="range" name="pixelSize" id="pixelSizeSlider" min="2" max="1024" step="2"
+                            value="16">
+                        <p id="pixelSizeValue" class="ml-1"></p>
+                    </div>
+                </fieldset>
 
-            <label for="animated">Animated</label>
-            <input type="checkbox" name="animated" id="checkboxanimation" onclick="toggleAnimation()">
+                <fieldset id="animationConfigs">
+                    <legend>Animation Engines</legend>
+                    <input type="checkbox" name="animated" id="checkboxanimation" onclick="toggleAnimation()" checked>
+                    <label for="checkboxanimation">Animated</label>
+                    <br>
+                    <input type="checkbox" name="pingpongloop" id="checkboxpingpong" onclick="togglePingPong()" checked>
+                    <label for="checkboxpingpong">Ping pong loop</label>
+                    <div class="slider mt-1">
+                        <label for="animationSpeed">Animation Speed factor</label>
+                        <br>
+                        <input type="range" name="animationSpeed" id="animationSpeed" min="0.6" max="5" step="0.2"
+                            value="2">
+                        <p id="animationSpeedValue" class="ml-1"></p>
+                    </div>
+                </fieldset>
 
-            <label for="pingpongloop">Ping pong loop</label>
-            <input type="checkbox" name="pingpongloop" id="checkboxanimation" onclick="togglePingPong()">
-        </form>
 
-        <div class="slider mb-2">
-            <input type="range" name="pixelSize" id="pixelSizeSlider" min="2" max="1024" step="2" value="16">
-            <p id="pixelSizeValue"></p>
+
+            </form>
+
+            <a onclick="develop()" id="asiderenderbutton">Refresh matrix</a>
+            <a href="https://github.com/imperioame/ScreenColourEngine" id="github" class="mt-2" target="blank">Github
+                project</a>
         </div>
 
-        <a onclick="develop()" id="asiderenderbutton">Refrescar matriz</a>
-        <a href="https://github.com/imperioame/ScreenColourEngine" id="github" target="blank">Github project</a>
     </aside>
 
     <main id="canvas"></main>

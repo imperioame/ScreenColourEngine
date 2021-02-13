@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bitter:wght@100;300;400;700;900&display=swap');
 
-html{
+html {
     --pixel-size: 4px;
 }
 
@@ -18,20 +18,36 @@ body {
     transition: 1s;
 }
 
-.my-2{
+.my-2 {
     margin: 3em 0;
 }
 
-.mt-2{
-    margin-top: 3em; 
+.mt-2 {
+    margin-top: 3em;
 }
 
-.mb-2{
-    margin-bottom: 3em; 
+.mt-1 {
+    margin-top: 1em;
 }
 
-.mb-1{
-    margin-bottom: 1em; 
+.mb-2 {
+    margin-bottom: 3em;
+}
+
+.mb-1 {
+    margin-bottom: 1em;
+}
+
+.ml-1{
+    margin-left: 1em;
+}
+
+.ml-2{
+    margin-left: 3em;
+}
+
+.warn{
+    color: red;
 }
 
 #canvas {
@@ -100,13 +116,28 @@ body {
     top: 0;
 }
 
-#aside #engineControls{
+#aside .asideflexcontainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: stretch;
+}
+
+#aside #engineControls {
     max-height: 300px;
     overflow-y: auto;
 }
-
+/*
 #aside form input {
     display: block;
+}*/
+
+#aside .slider input, #aside .slider p {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 #aside #asiderenderbutton {
@@ -130,9 +161,10 @@ body {
 }
 
 #aside #github {
+    /*
     position: fixed;
     bottom: 50px;
-    right: 150px;
+    right: 150px;*/
     font-size: 1em;
     text-decoration: none;
     color: skyblue;
